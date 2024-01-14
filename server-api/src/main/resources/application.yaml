@@ -19,3 +19,13 @@ spring:
         default_batch_fetch_size: 100
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 68895080890-e0ktqa21oo6d1jssli31730jkmccucgl.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email

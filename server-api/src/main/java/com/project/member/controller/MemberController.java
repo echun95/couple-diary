@@ -1,6 +1,6 @@
 package com.project.member.controller;
 
-import com.project.entity.Member;
+import com.project.entity.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     @GetMapping("/test")
-    public ResponseEntity<Member> test(){
-        Member member = Member.builder()
-                .memberId(1L)
-                .memberName("test")
+    public ResponseEntity<Test> test(){
+        Test test = Test.builder()
+                .testId(1L)
+                .name("test")
                 .build();
-        return new ResponseEntity<>(member, HttpStatus.OK);
+        return new ResponseEntity<>(test, HttpStatus.OK);
     }
 }

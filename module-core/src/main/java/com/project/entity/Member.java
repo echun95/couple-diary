@@ -10,18 +10,30 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TB_MEMBER")
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column(name = "MEMBER_NAME")
-    private String memberName;
+    private String name;
+
+    @Column(name = "MEMBER_PASSWORD")
+    private String password;
+
+    @Column(name = "MEMBER_EMAIL")
+    private String email;
+
+    @Column(name = "PROVIDER")
+    private String provider;
+    @Column(name = "PROVIDER_ID")
+    private String providerId;
+
 
     @Builder
-    public Member(Long memberId, String memberName) {
+    public Member(Long memberId, String name) {
         this.memberId = memberId;
-        this.memberName = memberName;
+        this.name = name;
     }
 }
