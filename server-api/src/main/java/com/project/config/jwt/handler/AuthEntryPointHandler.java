@@ -29,13 +29,7 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
 			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		ErrorResponse errorResponse;
-		if (authException instanceof InsufficientAuthenticationException) {
-			// 로그인이 필요한 경우 처리
-			errorResponse = ErrorResponse.builder()
-					.resultCode(HttpServletResponse.SC_UNAUTHORIZED)
-					.resultMsg("로그인이 필요합니다.")
-					.build();
-		} else if (authException.getCause() instanceof ExpiredJwtException) {
+		if (authException.getCause() instanceof ExpiredJwtException) {
 			// 만료된 JWT 예외 처리
 			errorResponse = ErrorResponse.builder()
 					.resultCode(HttpServletResponse.SC_UNAUTHORIZED)
@@ -45,7 +39,7 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
 			// 기타 인증 예외 처리
 			errorResponse = ErrorResponse.builder()
 					.resultCode(HttpServletResponse.SC_UNAUTHORIZED)
-					.resultMsg("인증에 실패했습니다.")
+					.resultMsg("인증에 실패했습니다. 다시 로그인 해주세요.")
 					.build();
 		}
 		log.warn("Unauthorized error: {}", authException.getMessage());
