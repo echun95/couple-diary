@@ -1,6 +1,8 @@
 server:
   port: 8081
 spring:
+  profiles:
+    include: oauth
   datasource:
     url: jdbc:mariadb://localhost:3306/couple-diary
     username: root
@@ -19,13 +21,9 @@ spring:
         default_batch_fetch_size: 100
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 68895080890-e0ktqa21oo6d1jssli31730jkmccucgl.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - profile
-              - email
+  thymeleaf:
+    prefix: classpath:templates/thymeleaf/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: false
