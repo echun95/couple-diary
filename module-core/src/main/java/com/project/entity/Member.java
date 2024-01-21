@@ -1,5 +1,6 @@
 package com.project.entity;
 
+import com.project.enums.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,15 +26,28 @@ public class Member extends BaseEntity {
     @Column(name = "MEMBER_EMAIL")
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "MEMBER_ROLE")
+    private Role role;
+
     @Column(name = "PROVIDER")
     private String provider;
     @Column(name = "PROVIDER_ID")
     private String providerId;
-
+    @Column(name = "REFRESH_TOKEN")
+    private String refreshToken;
 
     @Builder
-    public Member(Long memberId, String name) {
-        this.memberId = memberId;
+    public Member(String name, String password, String email, Role role, String provider, String providerId, String refreshToken) {
         this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.refreshToken = refreshToken;
+    }
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
