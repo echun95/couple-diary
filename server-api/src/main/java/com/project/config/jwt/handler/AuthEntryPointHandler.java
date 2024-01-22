@@ -26,8 +26,8 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException authException)
 		throws IOException {
-			response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		ErrorResponse errorResponse;
 		if (authException.getCause() instanceof ExpiredJwtException) {
 			// 만료된 JWT 예외 처리
@@ -45,8 +45,6 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
 		log.warn("Unauthorized error: {}", authException.getMessage());
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(response.getOutputStream(), errorResponse);
-
-
 	}
 
 }

@@ -14,9 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -44,7 +46,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		try {
 			// 쿠키에 저장된 액세스 토큰 값 저장
 			String jwt = jwtUtils.getJwtFromCookies(request);
-
 			// 액세스 토큰 검증
 			if (StringUtils.hasText(jwt) && jwtUtils.validateJwtToken(jwt)) {
 				// 토큰 값 파싱 후 ID 추출
@@ -91,16 +92,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	 * */
 	private void generateAuthentication(HttpServletRequest request, Member findUser) {
 		// DB에서 조회된 유저정보 SecurityContextHolder에 저장
+		String jwt = jwtUtils.getJwtFromCookies(request);
 		UserDetails userDetails = memberDetailsService.loadUserByUsername(findUser.getEmail());
-		UsernamePasswordAuthenticationToken authentication =
-			new UsernamePasswordAuthenticationToken(
-				userDetails,
-				null,
-				userDetails.getAuthorities());
-
-		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		AbstractAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(userDetails, jwt, userDetails.getAuthorities());
+		authenticated.setDetails(new WebAuthenticationDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(authenticated);
 	}
 
 	private boolean handleException(Exception e) {
